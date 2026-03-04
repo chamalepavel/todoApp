@@ -83,7 +83,6 @@ afeca `docker-compose.yml` y el archivo `src/config/index.js` donde se lee la UR
 - **Principio violado**: Economía de Mecanismo
 - **Descripción**: El servicio Mongo está accesible sin credenciales; cualquier proceso local o remoto puede conectarse.
 - **Solución concreta**: Configurar usuario/contraseña en `docker-compose.yml` y usar `MONGO_URI` con credenciales guardadas en `.env`. Cambiar `src/config/index.js` para leer la variable.
-- **Clase del curso**: Clase 4
 
 7. VULNERABILIDAD: MASS ASSIGNMENT SIN RESTRICCIÓN
 
@@ -145,21 +144,4 @@ detectable en `src/server.js` previamente y corregido en `src/config/index.js`
 - **Solución concreta**: Remover cadenas de texto del código, usar `process.env.MONGO_URI` en `.env` y en `docker-compose.yml` la variable de ambiente.
 - **Clase del curso**: Clase 4
 
-SECCIÓN IMPACTO
 
-Vulnerabilidad más crítica: Sin autenticación en ningún endpoint
-
-El acceso anónimo permite a un atacante remoto:
-
-1. Leer todas las tareas almacenadas, exponiendo datos posiblemente sensibles.
-2. Crear, modificar o borrar registros sin control, dañando la integridad de la aplicación.
-3. Escalamiento de ataque hacia otras capas si hay credenciales reusadas.
-
-En un escenario de producción, esto podría resultar en filtración masiva de datos y derribo del servicio. La implementación del middleware `auth` es el primer paso ineludible; su omisión invalida cualquier otra medida de seguridad.
-
-(Se puede incluir diagrama simple de flujo mostrando petición sin token y con token).
-
-
----
-
-*El documento anterior es el borrador inicial para tu revisión. Si necesitas ajustes o deseas que agregue vulnerabilidades adicionales encontradas en la Tarea 1, avísame. Cuando me des el visto bueno trabajaré en los cambios de código y demás artefactos.*
