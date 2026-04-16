@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const refreshTokenStore = new Map();
 
@@ -12,7 +13,7 @@ function generateAccessToken(user) {
 
 function generateRefreshToken(user) {
   const token = jwt.sign(
-    { id: user._id, email: user.email, role: user.role },
+    { id: user._id, email: user.email, role: user.role, jti: crypto.randomUUID() },
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
   );
