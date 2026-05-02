@@ -3,7 +3,7 @@ const tareasRouter = require('./routes/tareas');
 const authRouter = require('./routes/auth');
 const securityHeaders = require('./middlewares/securityHeaders');
 const corsConfig = require('./config/cors');
-const errorHandler = require('./middlewares/errorHandler');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
