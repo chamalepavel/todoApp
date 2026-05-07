@@ -3,6 +3,12 @@ const User = require('../models/user.model');
 const tokenService = require('./tokenService');
 
 async function register(email, password) {
+  const existing = await User.findOne({ email });
+  if (existing) {
+    const err = new Error('Email already registered');
+    err.status = 409;
+    throw err;
+  }
   const hashed = await bcrypt.hash(password, 10);
   const user = await User.create({ email, password: hashed });
   const accessToken = tokenService.generateAccessToken(user);
