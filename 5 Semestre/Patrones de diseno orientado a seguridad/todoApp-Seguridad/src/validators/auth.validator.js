@@ -1,6 +1,5 @@
 const Joi = require('joi');
 
-// Schema para registrar un usuario nuevo
 const registerSchema = Joi.object({
   email: Joi.string().email().required().messages({
     'string.email': 'Debe ser un correo electrónico válido',
@@ -13,7 +12,6 @@ const registerSchema = Joi.object({
   }),
 });
 
-// Schema para iniciar sesión — mismos campos, sin reglas extra de formato
 const loginSchema = Joi.object({
   email: Joi.string().email().required().messages({
     'string.email': 'Debe ser un correo electrónico válido',

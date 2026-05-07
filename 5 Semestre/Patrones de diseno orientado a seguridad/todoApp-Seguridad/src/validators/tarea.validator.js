@@ -1,6 +1,5 @@
 const Joi = require('joi');
 
-// Regla compartida para el campo title
 const titleField = Joi.string()
   .min(1)
   .max(200)
@@ -13,13 +12,11 @@ const titleField = Joi.string()
     'any.required': 'El título es obligatorio',
   });
 
-// Schema para crear una tarea (POST) — title es obligatorio
 const tareaPostSchema = Joi.object({
   title: titleField.required(),
   completed: Joi.boolean(),
 });
 
-// Schema para actualizar una tarea (PUT) — title es opcional
 const tareaPutSchema = Joi.object({
   title: titleField,
   completed: Joi.boolean(),

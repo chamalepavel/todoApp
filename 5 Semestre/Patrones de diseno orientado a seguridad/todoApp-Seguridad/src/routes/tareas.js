@@ -6,7 +6,6 @@ const { tareaPostSchema, tareaPutSchema } = require('../validators/tarea.validat
 const auth = require('../middlewares/auth');
 const rateLimiter = require('../middlewares/rateLimiter');
 
-// POST /api/tareas
 router.post('/', auth, rateLimiter, validate(tareaPostSchema), async (req, res, next) => {
   try {
     const { title, completed } = req.body;
@@ -18,7 +17,6 @@ router.post('/', auth, rateLimiter, validate(tareaPostSchema), async (req, res, 
   }
 });
 
-// GET /api/tareas
 router.get('/', auth, rateLimiter, async (req, res, next) => {
   try {
     const tareas = await Tarea.find().lean();
@@ -28,7 +26,6 @@ router.get('/', auth, rateLimiter, async (req, res, next) => {
   }
 });
 
-// GET /api/tareas/:id
 router.get('/:id', auth, rateLimiter, async (req, res, next) => {
   try {
     const tarea = await Tarea.findById(req.params.id).lean();
@@ -39,7 +36,6 @@ router.get('/:id', auth, rateLimiter, async (req, res, next) => {
   }
 });
 
-// PUT /api/tareas/:id
 router.put('/:id', auth, rateLimiter, validate(tareaPutSchema), async (req, res, next) => {
   try {
     const { title, completed } = req.body;
@@ -59,7 +55,6 @@ router.put('/:id', auth, rateLimiter, validate(tareaPutSchema), async (req, res,
   }
 });
 
-// DELETE /api/tareas/:id
 router.delete('/:id', auth, rateLimiter, async (req, res, next) => {
   try {
     const tarea = await Tarea.findById(req.params.id);
