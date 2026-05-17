@@ -13,7 +13,6 @@ router.post('/register', rateLimitRegister, validate(registerSchema), async (req
     const { email, password } = req.body;
     const result = await authGateway.register(email, password);
 
-    // Registramos que un usuario nuevo se registró exitosamente
     await logAuditEvent({
       action: AUDIT_ACTIONS.USER_REGISTER,
       actorId: result.user.id,
@@ -36,7 +35,6 @@ router.post('/login', rateLimitLogin, validate(loginSchema), async (req, res, ne
     const { email, password } = req.body;
     const result = await authGateway.login(email, password);
 
-    // Registramos el login exitoso
     await logAuditEvent({
       action: AUDIT_ACTIONS.LOGIN_SUCCESS,
       actorId: result.user.id,
@@ -50,8 +48,6 @@ router.post('/login', rateLimitLogin, validate(loginSchema), async (req, res, ne
 
     return res.json(result);
   } catch (err) {
-    // Si authGateway.login lanza un error, significa que el login falló.
-    // Registramos el intento fallido con el email que se usó.
     await logAuditEvent({
       action: AUDIT_ACTIONS.LOGIN_FAILED,
       actorId: null,
@@ -79,8 +75,6 @@ router.post('/logout', async (req, res) => {
   const { refreshToken } = req.body;
   tokenService.revokeRefreshToken(refreshToken);
 
-  // Registramos el logout. No tenemos req.user porque esta ruta no pide JWT,
-  // pero podemos dejar constancia del evento con la IP.
   await logAuditEvent({
     action: AUDIT_ACTIONS.LOGOUT,
     ip: req.ip,

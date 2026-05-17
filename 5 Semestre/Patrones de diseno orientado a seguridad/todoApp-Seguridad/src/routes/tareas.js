@@ -14,7 +14,6 @@ router.post('/', auth, rateLimiter, validate(tareaPostSchema), async (req, res, 
     const tarea = new Tarea({ title, completed, ownerId: req.user.id });
     await tarea.save();
 
-    // Registramos que el usuario creó una tarea nueva
     await logAuditEvent({
       action: AUDIT_ACTIONS.TAREA_CREATED,
       actorId: req.user.id,
@@ -58,7 +57,6 @@ router.put('/:id', auth, rateLimiter, validate(tareaPutSchema), async (req, res,
     if (!tarea) return res.status(404).json({ error: 'Not found' });
 
     if (tarea.ownerId !== req.user.id) {
-      // El usuario intentó modificar una tarea que no le pertenece
       await logAuditEvent({
         action: AUDIT_ACTIONS.FORBIDDEN_ACCESS,
         actorId: req.user.id,
@@ -90,7 +88,6 @@ router.delete('/:id', auth, rateLimiter, async (req, res, next) => {
     if (!tarea) return res.status(404).json({ error: 'Not found' });
 
     if (tarea.ownerId !== req.user.id) {
-      // El usuario intentó borrar una tarea que no le pertenece
       await logAuditEvent({
         action: AUDIT_ACTIONS.FORBIDDEN_ACCESS,
         actorId: req.user.id,
@@ -107,7 +104,6 @@ router.delete('/:id', auth, rateLimiter, async (req, res, next) => {
 
     await tarea.deleteOne();
 
-    // Registramos que se eliminó una tarea correctamente
     await logAuditEvent({
       action: AUDIT_ACTIONS.TAREA_DELETED,
       actorId: req.user.id,

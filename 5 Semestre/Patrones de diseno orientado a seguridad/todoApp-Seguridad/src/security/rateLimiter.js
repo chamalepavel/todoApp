@@ -9,7 +9,6 @@ const rateLimitLogin = rateLimit({
   legacyHeaders: false,
   keyGenerator: (req) => `${ipKeyGenerator(req)}:${req.body?.email ?? 'unknown'}`,
   handler: async (req, res) => {
-    // Alguien superó el límite de intentos de login, lo registramos
     await logAuditEvent({
       action: AUDIT_ACTIONS.RATE_LIMIT_EXCEEDED,
       actorEmail: req.body?.email || null,
@@ -33,7 +32,6 @@ const rateLimitRegister = rateLimit({
   legacyHeaders: false,
   keyGenerator: (req) => `${ipKeyGenerator(req)}:${req.body?.email ?? 'unknown'}`,
   handler: async (req, res) => {
-    // Alguien superó el límite de intentos de registro, lo registramos
     await logAuditEvent({
       action: AUDIT_ACTIONS.RATE_LIMIT_EXCEEDED,
       actorEmail: req.body?.email || null,
